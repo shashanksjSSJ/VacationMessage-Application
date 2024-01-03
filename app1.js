@@ -223,7 +223,7 @@ async function listUnrepliedEmailsToday(gmail) {
     } catch (error) {
       console.error('Error executing Vacation Reply:', error.message);
     } finally {
-     
+    // const nextExecutionTime = Math.floor(Math.random() * (120 - 45 + 1) + 45) * 1000;
     const nextExecutionTime = 10*1000;
     setTimeout(executeVacationReply, nextExecutionTime);
     }
