@@ -1,0 +1,27 @@
+Steps to Complete the Assessment:
+
+1. Set up Google Mail API:
+   - Create a project in the Google Developer Console.
+   - Enable the Gmail API for the project.
+   - Generate OAuth 2.0 credentials for authentication.
+   - Securely save the credentials for use in the Node.js application.
+
+2. Test Sending Emails:
+   - Utilize Nodemailer or a similar tool to test the capability of sending emails.
+
+3. Understand the Application Flow:
+   - Identify and filter emails received today.
+   - Exclude system-generated emails and those already labeled.
+   - Create a new label for each email to avoid sending multiple replies.
+   - Extract the sender's email address from the email details.
+   - Send a vacation reply to all eligible recipients.
+   - Consider setting random intervals (between 45 to 120 seconds) for refreshing.
+
+4. Labeling and Filtering:
+   - Before sending a reply, check if the email has already been labeled to avoid unnecessary replies.
+
+5. Refreshing Interval:
+   - Adjust the application to refresh at random intervals (45 to 120 seconds) rather than every 10 seconds.
+
+6. Error Handling:
+   - Implement proper error handling and logging to capture and address any issues during the process.
