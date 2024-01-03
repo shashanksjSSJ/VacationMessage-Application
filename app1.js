@@ -46,51 +46,6 @@ async function sendMail(){
     }
 }
 
-async function sendVacationReply(messageId, recipientEmail) {
-    try {
-      
-      const emailDetails = await gmail.users.messages.get({
-        userId: 'me',
-        id: messageId,
-      });
-  
-     
-      const senderEmail = emailDetails.data.payload.headers.find(
-        (header) => header.name === 'From'
-      ).value;
-  
-      const draft = await gmail.users.drafts.create({
-        userId: 'me',
-        resource: {
-          message: {
-            raw: createVacationReply(senderEmail, recipientEmail),
-          },
-        },
-      });
-  
-      await gmail.users.drafts.send({
-        userId: 'me',
-        requestBody: {
-          id: draft.data.id,
-        },
-      });
-  
-      return 'Vacation Reply sent successfully';
-    } catch (error) {
-      console.error('Error in sendVacationReply:', error);
-      return 'Error sending Vacation Reply';
-    }
-  }
-  
-
-function createVacationReply(senderEmail, recipientEmail) {
-    const subject = 'Out of Office: [Your Subject]';
-    const body = 'Thank you for your email. I am currently out of the office and will respond to your message as soon as possible.';
-  
-    const vacationReply = `From: ${senderEmail}\nTo: ${recipientEmail}\nSubject: ${subject}\n\n${body}`;
-  
-    return Buffer.from(vacationReply).toString('base64');
-  }
   
 async function listUnrepliedEmailsToday(gmail) {
     const currentDate = new Date().toISOString().split('T')[0];
@@ -119,24 +74,7 @@ async function listUnrepliedEmailsToday(gmail) {
   }
 
   
-  async function getEmailDetails(emailId, threadId) {
-    try {
-      const response = await gmail.users.messages.get({
-        userId: 'me',
-        id: emailId,
-        format: 'metadata',
-        metadataHeaders: ['From'],
-      });
-  
-      const headers = response.data.payload.headers;
-      const senderEmail = headers.find(header => header.name === 'From').value;
-  
-      return { senderEmail, threadId };
-    } catch (error) {
-      console.error('Error getting email details:', error.message);
-      throw error;
-    }
-  }
+ 
   async function addLabelAndMoveEmail(gmail, messageId, labelName) {
     const labelId = await createLabelIfNotExists(gmail, labelName);
   
@@ -163,9 +101,9 @@ async function listUnrepliedEmailsToday(gmail) {
     }
   }
 
-  async function sendVacationReply(senderEmail, threadId) {
+  async function sendVacationReply(gmail,senderEmail, threadId) {
     try {
-      const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
+      
   
       const vacationReply = `
         <p>Thank you for your email!</p>
@@ -212,7 +150,7 @@ async function listUnrepliedEmailsToday(gmail) {
       for (const email of unrepliedEmails) {
         try {
           const senderEmail = await getEmailSender(gmail, email.id);
-          await sendVacationReply(senderEmail, email.threadId);
+          await sendVacationReply(gmail,senderEmail, email.threadId);
           await addLabelAndMoveEmail(gmail, email.id, SENT_REPLY_LABEL);
         } catch (error) {
           console.error(`Error processing email ${email.id}: ${error.message}`);
