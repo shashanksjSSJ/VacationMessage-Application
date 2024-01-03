@@ -7,11 +7,6 @@ This Node.js application automates the process of sending vacation replies to em
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-- [Usage](#usage)
-- [Configuration](#configuration)
-- [Features](#features)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Getting Started
 
